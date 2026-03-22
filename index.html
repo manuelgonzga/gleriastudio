@@ -1,8 +1,2102 @@
 <!DOCTYPE html>
-<html>
-<head><title>Nestly - Oficial</title></head>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gleria Studio</title>
+  <link rel="icon" type="image/png" href="images/gleria_studio_2.png" />
+  <meta name="description"
+    content="Gleria Studio builds mobile apps for Android. Nestly, Last Button, Space Focus, PoopIt and Daily3." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #060612;
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface-md: rgba(255, 255, 255, 0.07);
+      --surface-hover: rgba(255, 255, 255, 0.09);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.2);
+      --text: #f1f5f9;
+      --text-muted: rgba(241, 245, 249, 0.5);
+      --violet: #7c3aed;
+      --blue: #2563eb;
+      --radius: 24px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ─── Cursor glow ─── */
+    #cursor-glow {
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.07) 0%, transparent 65%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      will-change: transform;
+    }
+
+    /* ─── Background ─── */
+    .bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 85% 75% at 50% 0%, black 30%, transparent 100%);
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(110px);
+      animation: drift 26s ease-in-out infinite alternate;
+    }
+
+    .orb-1 {
+      width: 720px;
+      height: 720px;
+      background: #7c3aed;
+      top: -280px;
+      left: -220px;
+      opacity: 0.18;
+    }
+
+    .orb-2 {
+      width: 520px;
+      height: 520px;
+      background: #2563eb;
+      top: 32%;
+      right: -160px;
+      opacity: 0.14;
+      animation-delay: -9s;
+    }
+
+    .orb-3 {
+      width: 600px;
+      height: 600px;
+      background: #06b6d4;
+      bottom: -180px;
+      left: 28%;
+      opacity: 0.11;
+      animation-delay: -18s;
+    }
+
+    @keyframes drift {
+      from {
+        transform: translate(0, 0) scale(1);
+      }
+
+      to {
+        transform: translate(55px, 38px) scale(1.12);
+      }
+    }
+
+    /* ─── Nav ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      height: 66px;
+      background: rgba(6, 6, 18, 0.65);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    nav.scrolled {
+      background: rgba(6, 6, 18, 0.85);
+      border-bottom-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 33px;
+      width: auto;
+      border-radius: 8px;
+    }
+
+    .nav-logo-text {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #c4b5fd, #93c5fd, #67e8f9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.83rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      position: relative;
+      padding-bottom: 2px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, var(--violet), var(--blue));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .lang-switch {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 3px;
+    }
+
+    .lang-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 100px;
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      color: #fff;
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: var(--text);
+    }
+
+    /* ─── Marquee ─── */
+    .marquee-section {
+      position: fixed;
+      top: 66px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6, 6, 18, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 28px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .marquee-sep {
+      display: block;
+      width: 4px;
+      height: 4px;
+      background: rgba(167, 139, 250, 0.5);
+      border-radius: 50%;
+    }
+
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* ─── Shared ─── */
+    section {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #a78bfa;
+      margin-bottom: 14px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: linear-gradient(90deg, #7c3aed, #2563eb);
+      border-radius: 2px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #c4b5fd 0%, #93c5fd 50%, #67e8f9 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ─── Reveal ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .delay-1 {
+      transition-delay: 0.12s;
+    }
+
+    .delay-2 {
+      transition-delay: 0.22s;
+    }
+
+    .delay-3 {
+      transition-delay: 0.32s;
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 140px 6% 80px;
+      position: relative;
+    }
+
+    .hero-prism-wrapper {
+      width: 460px;
+      max-width: 82vw;
+      margin-bottom: 6px;
+    }
+
+    .hero-prism {
+      width: 100%;
+      display: block;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 7vw, 5.6rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -3px;
+      margin-bottom: 22px;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 1.8vw, 1.12rem);
+      color: var(--text-muted);
+      max-width: 470px;
+      margin: 0 auto 46px;
+      line-height: 1.75;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 14px 28px;
+      border-radius: 100px;
+      box-shadow: 0 4px 28px rgba(124, 58, 237, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 40px rgba(124, 58, 237, 0.6);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface-md);
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 14px 28px;
+      border-radius: 100px;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    /* ─── Stats ─── */
+    .stats-section {
+      padding: 80px 6%;
+    }
+
+    .stats-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 24px;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-4px);
+    }
+
+    .stat-num {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+      background: linear-gradient(135deg, #c4b5fd, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    /* ─── Apps section ─── */
+    .apps-section {
+      padding: 100px 6%;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.9rem, 4vw, 2.9rem);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      margin-top: 12px;
+      font-size: 0.97rem;
+    }
+
+    .apps-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    .apps-row {
+      display: flex;
+      gap: 24px;
+    }
+
+    .apps-row .app-card {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .apps-row-2 {
+      justify-content: center;
+    }
+
+    .apps-row-2 .app-card {
+      flex: 0 0 calc(33.333% - 16px);
+    }
+
+    /* App card */
+    .app-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px 26px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.35s, box-shadow 0.35s, transform 0.18s;
+      will-change: transform;
+    }
+
+    .app-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: var(--card-glow, transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .app-card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 24px 72px rgba(0, 0, 0, 0.45);
+    }
+
+    .app-card:hover::before {
+      opacity: 1;
+    }
+
+    /* ── Nestly: GREEN ── */
+    .card-nestly {
+      --card-glow: radial-gradient(ellipse at top left, rgba(16, 185, 129, 0.1), transparent 65%);
+    }
+
+    .card-nestly .app-category {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+    }
+
+    .card-nestly .feature-dot {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    /* ── Last Button: amber/red ── */
+    .card-lastbtn {
+      --card-glow: radial-gradient(ellipse at top right, rgba(245, 158, 11, 0.1), transparent 65%);
+    }
+
+    .card-lastbtn .app-category {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+    }
+
+    .card-lastbtn .feature-dot {
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+    }
+
+    /* ── Space Focus: cyan/indigo ── */
+    .card-spacefocus {
+      --card-glow: radial-gradient(ellipse at top, rgba(14, 165, 233, 0.1), transparent 65%);
+    }
+
+    .card-spacefocus .app-category {
+      background: rgba(14, 165, 233, 0.2);
+      color: #7dd3fc;
+    }
+
+    .card-spacefocus .feature-dot {
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    }
+
+    /* ── PoopIt: pink/orange ── */
+    .card-poopit {
+      --card-glow: radial-gradient(ellipse at top, rgba(236, 72, 153, 0.1), transparent 65%);
+    }
+
+    .card-poopit .app-category {
+      background: rgba(236, 72, 153, 0.2);
+      color: #f9a8d4;
+    }
+
+    .card-poopit .feature-dot {
+      background: linear-gradient(135deg, #ec4899, #f97316);
+    }
+
+    /* ── Daily3: PURPLE ── */
+    .card-daily3 {
+      --card-glow: radial-gradient(ellipse at top, rgba(124, 58, 237, 0.1), transparent 65%);
+    }
+
+    .card-daily3 .app-category {
+      background: rgba(124, 58, 237, 0.2);
+      color: #c4b5fd;
+    }
+
+    .card-daily3 .feature-dot {
+      background: linear-gradient(135deg, #7c3aed, #9333ea);
+    }
+
+    .app-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 18px;
+      flex-shrink: 0;
+    }
+
+    .app-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .app-category {
+      display: inline-block;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-bottom: 10px;
+    }
+
+    .app-card h3 {
+      font-size: 1.28rem;
+      font-weight: 800;
+      margin-bottom: 9px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.84rem;
+      line-height: 1.7;
+      margin-bottom: 18px;
+      flex-grow: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .app-features {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.79rem;
+      color: var(--text-muted);
+    }
+
+    .feature-dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.5rem;
+      font-weight: 900;
+      flex-shrink: 0;
+      color: #fff;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Privacy policy button */
+    .privacy-btn {
+      position: absolute;
+      top: 13px;
+      right: 16px;
+      z-index: 2;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      padding: 0;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .privacy-btn:hover {
+      color: var(--text);
+    }
+
+    /* Testing badge */
+    .testing-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .testing-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #f59e0b;
+      flex-shrink: 0;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: 0.3;
+        transform: scale(0.5)
+      }
+    }
+
+    .card-testing {
+      opacity: 0.78;
+    }
+
+    .card-testing:hover {
+      transform: none !important;
+      box-shadow: none !important;
+      border-color: var(--border) !important;
+    }
+
+    /* Google Play badge */
+    .play-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 8px 14px;
+      text-decoration: none;
+      color: #fff;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .play-badge:hover {
+      opacity: 0.82;
+      transform: translateY(-2px);
+    }
+
+    .play-badge-logo {
+      width: 20px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .play-badge-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+
+    .play-badge-get {
+      font-size: 0.57rem;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      opacity: 0.8;
+    }
+
+    .play-badge-store {
+      font-size: 0.87rem;
+      font-weight: 600;
+    }
+
+    /* ─── Contact Modal ─── */
+    .contact-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(0, 0, 0, 0.78);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s;
+    }
+
+    .contact-modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .contact-modal-box {
+      background: #0e0e20;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 28px;
+      padding: 40px 36px;
+      max-width: 620px;
+      width: 100%;
+      transform: translateY(20px);
+      transition: transform 0.22s;
+      position: relative;
+    }
+
+    .contact-modal-overlay.open .contact-modal-box {
+      transform: translateY(0);
+    }
+
+    .contact-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 1.3rem;
+      line-height: 1;
+      transition: color 0.2s;
+      padding: 2px;
+    }
+
+    .contact-modal-close:hover {
+      color: var(--text);
+    }
+
+    .contact-modal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(124, 58, 237, 0.12);
+      border: 1px solid rgba(124, 58, 237, 0.28);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #c4b5fd;
+      margin-bottom: 18px;
+    }
+
+    .contact-modal-box h2 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+
+    .contact-modal-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 28px;
+      max-width: 460px;
+    }
+
+    .contact-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .contact-option {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.25s, background 0.25s;
+    }
+
+    .contact-option:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .contact-option-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact-option-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .contact-option-icon.support {
+      background: rgba(124, 58, 237, 0.18);
+    }
+
+    .contact-option-icon.support svg {
+      stroke: #c4b5fd;
+    }
+
+    .contact-option-icon.project {
+      background: rgba(6, 182, 212, 0.18);
+    }
+
+    .contact-option-icon.project svg {
+      stroke: #67e8f9;
+    }
+
+    .contact-option h4 {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .contact-option p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+      flex-grow: 1;
+    }
+
+    .contact-option-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      border-radius: 100px;
+      padding: 8px 16px;
+      text-decoration: none;
+      margin-top: 4px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .contact-option-btn:hover {
+      opacity: 0.85;
+      transform: translateY(-1px);
+    }
+
+    .contact-option-btn.support {
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      color: #fff;
+    }
+
+    .contact-option-btn.project {
+      background: linear-gradient(135deg, #06b6d4, #10b981);
+      color: #fff;
+    }
+
+    .contact-modal-email {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-modal-email a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-modal-email a:hover {
+      color: var(--text);
+    }
+
+    @media (max-width: 520px) {
+      .contact-options {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-modal-box {
+        padding: 32px 22px;
+      }
+    }
+
+    /* ─── Privacy Modal ─── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-box {
+      background: #0e0e20;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 32px 28px;
+      max-width: 560px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      transform: translateY(18px);
+      transition: transform 0.22s;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+    }
+
+    .modal-overlay.open .modal-box {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      gap: 16px;
+    }
+
+    .modal-title {
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 1.3rem;
+      line-height: 1;
+      padding: 2px;
+      flex-shrink: 0;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: var(--text);
+    }
+
+    .modal-updated {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .modal-content h4 {
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin: 14px 0 4px;
+    }
+
+    .modal-content p {
+      font-size: 0.81rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 6px;
+    }
+
+    /* ─── About (redesigned) ─── */
+    .about-section { padding: 120px 6%; border-top: 1px solid var(--border); }
+
+    .about-header { text-align: center; max-width: 760px; margin: 0 auto 72px; }
+    .about-headline { font-size: clamp(2.4rem, 5.5vw, 4rem); font-weight: 800; letter-spacing: -2.5px; line-height: 1.08; margin-bottom: 20px; }
+    .about-headline-sub { font-size: 1.05rem; color: var(--text-muted); line-height: 1.8; max-width: 560px; margin: 0 auto; }
+
+    /* Story cards */
+    .about-story { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1060px; margin: 0 auto 16px; }
+    .story-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px 26px;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .story-card:hover { border-color: var(--border-hover); transform: translateY(-5px); box-shadow: 0 20px 60px rgba(0,0,0,0.35); }
+    .story-card-num { font-size: 0.64rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: #a78bfa; margin-bottom: 16px; }
+    .story-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.3px; }
+    .story-card p { font-size: 0.84rem; color: var(--text-muted); line-height: 1.78; }
+
+    /* Pillar cards */
+    .about-pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 1060px; margin: 0 auto 72px; }
+    .pillar-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 26px 22px;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .pillar-card:hover { border-color: var(--border-hover); transform: translateY(-4px); }
+    .pillar-icon {
+      width: 44px; height: 44px; border-radius: 13px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .pillar-icon svg { width: 22px; height: 22px; }
+    .pillar-icon.violet { background: rgba(124,58,237,0.15); }
+    .pillar-icon.violet svg { stroke: #c4b5fd; }
+    .pillar-icon.blue { background: rgba(37,99,235,0.15); }
+    .pillar-icon.blue svg { stroke: #93c5fd; }
+    .pillar-icon.cyan { background: rgba(6,182,212,0.15); }
+    .pillar-icon.cyan svg { stroke: #67e8f9; }
+    .pillar-icon.green { background: rgba(16,185,129,0.15); }
+    .pillar-icon.green svg { stroke: #6ee7b7; }
+    .pillar-card h4 { font-size: 0.92rem; font-weight: 800; }
+    .pillar-card p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.65; }
+
+    /* Stack area */
+    .about-stack-area { text-align: center; max-width: 600px; margin: 0 auto; }
+    .about-stack-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+    .stack-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 32px; }
+    .stack-tag { background: var(--surface); border: 1px solid var(--border); border-radius: 100px; padding: 5px 14px; font-size: 0.72rem; font-weight: 600; color: var(--text-muted); transition: border-color 0.2s, color 0.2s; cursor: default; }
+    .stack-tag:hover { border-color: rgba(167,139,250,0.4); color: #c4b5fd; }
+
+    @media (max-width: 860px) {
+      .about-story { grid-template-columns: 1fr; }
+      .about-pillars { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .about-pillars { grid-template-columns: 1fr; }
+    }
+
+    .about-card-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke: #a78bfa;
+    }
+
+    .about-card-title {
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .about-card-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+
+    /* ─── Footer ─── */
+    footer {
+      padding: 30px 6%;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-logo {
+      font-size: 0.95rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    footer p {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.74rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 780px) {
+      .apps-row {
+        flex-direction: column;
+      }
+
+      .apps-row-2 .app-card {
+        flex: 1;
+      }
+
+      .about-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .stats-inner {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links {
+        display: none;
+      }
+
+      .stats-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-box {
+        padding: 40px 22px;
+      }
+
+      .hero h1 {
+        letter-spacing: -2px;
+      }
+    }
+  </style>
+</head>
+
 <body>
-    <h1>Nestly</h1>
-    <p>Bienvenido a la web oficial de Nestly. Disponible en Google Play.</p>
+
+  <div id="cursor-glow"></div>
+
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Nav -->
+  <nav id="main-nav">
+    <a class="nav-logo" href="#">
+      <img src="images/gleria_studio_2.png" alt="Gleria Studio" />
+      <span class="nav-logo-text">Gleria Studio</span>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#apps" data-i18n="nav.apps">Apps</a></li>
+        <li><a href="#about" data-i18n="nav.about">About</a></li>
+        <li><a href="#" onclick="openContact();return false;" data-i18n="nav.contact">Contact</a></li>
+      </ul>
+      <div class="lang-switch">
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('es')">ES</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Marquee — fixed under nav -->
+  <div class="marquee-section" aria-hidden="true">
+    <div class="marquee-track" id="marquee-track"></div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-prism-wrapper reveal">
+      <img src="images/gleria_studio_1.png" alt="" class="hero-prism" aria-hidden="true" />
+    </div>
+    <h1 class="reveal delay-1">
+      <span data-i18n="hero.h1a">Apps that improve</span><br />
+      <span class="gradient-text" data-i18n="hero.h1b">your real life</span>
+    </h1>
+    <p class="hero-sub reveal delay-2" data-i18n="hero.sub">At Gleria Studio we craft mobile apps with care for every
+      detail: finance, productivity, health and entertainment.</p>
+    <div class="hero-cta reveal delay-3">
+      <a href="#apps" class="btn-primary">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+        </svg>
+        <span data-i18n="hero.cta1">View all apps</span>
+      </a>
+      <a href="#about" class="btn-secondary">
+        <span data-i18n="hero.cta2">About the studio</span>
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats-section">
+    <div class="stats-inner">
+      <div class="stat-card reveal">
+        <div class="stat-num" data-target="5" data-suffix="">0</div>
+        <div class="stat-label" data-i18n="stats.apps">Apps in portfolio</div>
+      </div>
+      <div class="stat-card reveal delay-1">
+        <div class="stat-num" data-target="100" data-suffix="+">0</div>
+        <div class="stat-label" data-i18n="stats.downloads">Downloads</div>
+      </div>
+      <div class="stat-card reveal delay-2">
+        <div class="stat-num" data-i18n="stats.free">Free</div>
+        <div class="stat-label" data-i18n="stats.freedesc">All apps, no subscriptions</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Apps -->
+  <section class="apps-section" id="apps">
+    <div class="section-header reveal">
+      <div class="section-label" data-i18n="apps.label">Our Apps</div>
+      <h2 data-i18n="apps.h2">Every app, a real solution</h2>
+      <p data-i18n="apps.sub">From tracking your budget to focusing your mind, we have an app for every moment.</p>
+    </div>
+
+    <div class="apps-grid">
+
+      <!-- Row 1 -->
+      <div class="apps-row">
+
+        <!-- Nestly -->
+        <div class="app-card card-nestly reveal">
+          <div class="app-icon"><img src="icons/nestly.png" alt="Nestly" /></div>
+          <div class="app-category" data-i18n="nestly.cat">Finance</div>
+          <h3>Nestly</h3>
+          <p class="card-desc" data-i18n="nestly.desc">Take control of your spending without the complexity. Log
+            transactions, set budget limits and visualize your finances, fully offline with no account needed.</p>
+          <div class="app-features">
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="nestly.f1">Log expenses by category, date and
+                notes</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="nestly.f2">Set custom spending limits per
+                period</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="nestly.f3">Visual breakdown with charts and pie
+                graphs</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="nestly.f4">Supports 50+ world currencies</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <a href="https://play.google.com/store/apps/details?id=com.manuglezg.nestly" target="_blank" rel="noopener"
+              class="play-badge">
+              <svg class="play-badge-logo" viewBox="0 0 22 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M0.431 0.368C0.161 0.654 0 1.098 0 1.678V22.322C0 22.902 0.161 23.346 0.431 23.632L0.502 23.701L11.774 12.429V12.142L0.502 0.87L0.431 0.368Z"
+                  fill="url(#a)" />
+                <path
+                  d="M15.56 16.219L11.774 12.43V12.143L15.561 8.356L15.651 8.407L20.168 10.991C21.459 11.727 21.459 12.915 20.168 13.652L15.651 16.236L15.56 16.219Z"
+                  fill="url(#b)" />
+                <path
+                  d="M15.652 16.236L11.774 12.286L0.431 23.632C0.859 24.086 1.564 24.142 2.357 23.698L15.652 16.236Z"
+                  fill="url(#c)" />
+                <path d="M15.652 8.336L2.357 0.874C1.564 0.43 0.859 0.487 0.431 0.94L11.774 12.286L15.652 8.336Z"
+                  fill="url(#d)" />
+                <defs>
+                  <linearGradient id="a" x1="10.672" y1="1.401" x2="-4.512" y2="16.585" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#00A0FF" />
+                    <stop offset="0.007" stop-color="#00A1FF" />
+                    <stop offset="0.26" stop-color="#00BEFF" />
+                    <stop offset="0.512" stop-color="#00D2FF" />
+                    <stop offset="0.76" stop-color="#00DFFF" />
+                    <stop offset="1" stop-color="#00E3FF" />
+                  </linearGradient>
+                  <linearGradient id="b" x1="21.801" y1="12.286" x2="-0.333" y2="12.286" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#FFE000" />
+                    <stop offset="0.409" stop-color="#FFBD00" />
+                    <stop offset="0.775" stop-color="#FFA500" />
+                    <stop offset="1" stop-color="#FF9C00" />
+                  </linearGradient>
+                  <linearGradient id="c" x1="13.522" y1="14.252" x2="-5.807" y2="33.581" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#FF3A44" />
+                    <stop offset="1" stop-color="#C31162" />
+                  </linearGradient>
+                  <linearGradient id="d" x1="-2.003" y1="-5.366" x2="7.202" y2="3.839" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#32A071" />
+                    <stop offset="0.069" stop-color="#2DA771" />
+                    <stop offset="0.476" stop-color="#15CF74" />
+                    <stop offset="0.801" stop-color="#06E775" />
+                    <stop offset="1" stop-color="#00F076" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="play-badge-text">
+                <span class="play-badge-get" data-i18n="badge.get">GET IT ON</span>
+                <span class="play-badge-store">Google Play</span>
+              </div>
+            </a>
+          </div>
+          <button class="privacy-btn" onclick="openPrivacy('nestly')" data-i18n="badge.privacy">Privacy Policy</button>
+        </div>
+
+        <!-- Last Button -->
+        <div class="app-card card-lastbtn reveal delay-1">
+          <div class="app-icon"><img src="icons/lastbutton.png" alt="Last Button" /></div>
+          <div class="app-category" data-i18n="lastbtn.cat">Casual Game</div>
+          <h3>Last Button</h3>
+          <p class="card-desc" data-i18n="lastbtn.desc">One button. Endless possibilities. Tap to earn points, unlock
+            upgrades in the shop and beat your high score in this minimalist and addictive clicker.</p>
+          <div class="app-features">
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="lastbtn.f1">Tap the button to rack up
+                points</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="lastbtn.f2">Spend points in the in-game
+                shop</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="lastbtn.f3">Unlock cosmetic upgrades and
+                themes</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="lastbtn.f4">Auto-generated username, no
+                signup</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <a href="https://play.google.com/store/apps/details?id=com.manuglezg.lastbutton" target="_blank"
+              rel="noopener" class="play-badge">
+              <svg class="play-badge-logo" viewBox="0 0 22 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M0.431 0.368C0.161 0.654 0 1.098 0 1.678V22.322C0 22.902 0.161 23.346 0.431 23.632L0.502 23.701L11.774 12.429V12.142L0.502 0.87L0.431 0.368Z"
+                  fill="url(#e)" />
+                <path
+                  d="M15.56 16.219L11.774 12.43V12.143L15.561 8.356L15.651 8.407L20.168 10.991C21.459 11.727 21.459 12.915 20.168 13.652L15.651 16.236L15.56 16.219Z"
+                  fill="url(#f)" />
+                <path
+                  d="M15.652 16.236L11.774 12.286L0.431 23.632C0.859 24.086 1.564 24.142 2.357 23.698L15.652 16.236Z"
+                  fill="url(#g)" />
+                <path d="M15.652 8.336L2.357 0.874C1.564 0.43 0.859 0.487 0.431 0.94L11.774 12.286L15.652 8.336Z"
+                  fill="url(#h)" />
+                <defs>
+                  <linearGradient id="e" x1="10.672" y1="1.401" x2="-4.512" y2="16.585" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#00A0FF" />
+                    <stop offset="1" stop-color="#00E3FF" />
+                  </linearGradient>
+                  <linearGradient id="f" x1="21.801" y1="12.286" x2="-0.333" y2="12.286" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#FFE000" />
+                    <stop offset="1" stop-color="#FF9C00" />
+                  </linearGradient>
+                  <linearGradient id="g" x1="13.522" y1="14.252" x2="-5.807" y2="33.581" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#FF3A44" />
+                    <stop offset="1" stop-color="#C31162" />
+                  </linearGradient>
+                  <linearGradient id="h" x1="-2.003" y1="-5.366" x2="7.202" y2="3.839" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#32A071" />
+                    <stop offset="1" stop-color="#00F076" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="play-badge-text">
+                <span class="play-badge-get" data-i18n="badge.get">GET IT ON</span>
+                <span class="play-badge-store">Google Play</span>
+              </div>
+            </a>
+          </div>
+          <button class="privacy-btn" onclick="openPrivacy('lastbtn')" data-i18n="badge.privacy">Privacy Policy</button>
+        </div>
+
+        <!-- Space Focus -->
+        <div class="app-card card-spacefocus card-testing reveal delay-2">
+          <div class="app-icon"><img src="icons/stayfocus.png" alt="Space Focus" /></div>
+          <div class="app-category" data-i18n="spacefocus.cat">Productivity</div>
+          <h3>Space Focus</h3>
+          <p class="card-desc" data-i18n="spacefocus.desc">Stay focused on what matters. A focus session timer with a
+            space aesthetic, immersive Lottie animations and streak tracking to launch your productivity.</p>
+          <div class="app-features">
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="spacefocus.f1">Set your session length and start
+                focusing</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="spacefocus.f2">Build a daily focus streak</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="spacefocus.f3">Space-themed immersive
+                animations</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="spacefocus.f4">Get notified when your session
+                ends</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <div class="testing-badge"><span class="testing-dot"></span><span data-i18n="badge.testing">In
+                testing</span></div>
+          </div>
+          <button class="privacy-btn" onclick="openPrivacy('spacefocus')" data-i18n="badge.privacy">Privacy
+            Policy</button>
+        </div>
+
+      </div><!-- end row 1 -->
+
+      <!-- Row 2 -->
+      <div class="apps-row apps-row-2">
+
+        <!-- PoopIt -->
+        <div class="app-card card-poopit card-testing reveal">
+          <div class="app-icon"><img src="icons/popit.png" alt="PoopIt" /></div>
+          <div class="app-category" data-i18n="poopit.cat">Health</div>
+          <h3>PoopIt</h3>
+          <p class="card-desc" data-i18n="poopit.desc">Your digestive health journal. Log your routine using the Bristol
+            Stool Scale, color and effort, and get a personalized Health Score with weekly visual analytics.</p>
+          <div class="app-features">
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="poopit.f1">Log with Bristol Stool Scale (7
+                types)</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="poopit.f2">Track color, effort and quantity</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="poopit.f3">Daily Health Score ring (0–100)</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="poopit.f4">Weekly rings and monthly
+                calendar</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <div class="testing-badge"><span class="testing-dot"></span><span data-i18n="badge.testing">In
+                testing</span></div>
+          </div>
+          <button class="privacy-btn" onclick="openPrivacy('poopit')" data-i18n="badge.privacy">Privacy Policy</button>
+        </div>
+
+        <!-- Daily3 -->
+        <div class="app-card card-daily3 card-testing reveal delay-1">
+          <div class="app-icon"><img src="icons/daily3.png" alt="Daily3" /></div>
+          <div class="app-category" data-i18n="daily3.cat">Daily Challenges</div>
+          <h3>Daily3</h3>
+          <p class="card-desc" data-i18n="daily3.desc">Three daily challenges to keep you active. Complete your tasks,
+            earn points, unlock collection items and visit the shop to customize your experience.</p>
+          <div class="app-features">
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="daily3.f1">3 unique challenges refreshed
+                daily</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="daily3.f2">Earn points by completing
+                challenges</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="daily3.f3">Unlock items in the shop and
+                collection</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-dot">&#10003;</div><span data-i18n="daily3.f4">Swipe between game, shop and
+                options</span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <div class="testing-badge"><span class="testing-dot"></span><span data-i18n="badge.testing">In
+                testing</span></div>
+          </div>
+          <button class="privacy-btn" onclick="openPrivacy('daily3')" data-i18n="badge.privacy">Privacy Policy</button>
+        </div>
+
+      </div><!-- end row 2 -->
+
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about-section" id="about">
+
+    <!-- Header -->
+    <div class="about-header reveal">
+      <div class="section-label" data-i18n="about.label">About us</div>
+      <h2 class="about-headline" id="about-headline">We build apps <span class="gradient-text" id="about-headline2">people actually use</span></h2>
+      <p class="about-headline-sub" data-i18n="about.sub">Gleria Studio is an indie project built by a single developer tired of overcomplicated apps. Simple ideas, well executed, free for everyone.</p>
+    </div>
+
+    <!-- Story cards -->
+    <div class="about-story">
+      <div class="story-card reveal">
+        <div class="story-card-num" data-i18n="about.s1num">01 · Origin</div>
+        <h3 data-i18n="about.s1title">Born from real frustrations</h3>
+        <p data-i18n="about.s1body">Every app in our portfolio started as a personal problem. Nestly when I needed a budget tracker without subscriptions. Space Focus when I could not find a simple focus timer that did not feel like a productivity cult. We do not build to fill a market gap. We build because we need it ourselves.</p>
+      </div>
+      <div class="story-card reveal delay-1">
+        <div class="story-card-num" data-i18n="about.s2num">02 · How we build</div>
+        <h3 data-i18n="about.s2title">Native Android, modern stack</h3>
+        <p data-i18n="about.s2body">React Native and Expo give us native speed without sacrificing development agility. TypeScript keeps the code reliable. Zustand for state, Supabase when a backend is needed, AdMob for monetization that stays out of the way. Built to last.</p>
+      </div>
+      <div class="story-card reveal delay-2">
+        <div class="story-card-num" data-i18n="about.s3num">03 · What we stand for</div>
+        <h3 data-i18n="about.s3title">Free. Private.</h3>
+        <p data-i18n="about.s3body">All apps are free to download. No subscriptions, no paywalls, no accounts required. Most features work fully offline and your data stays on your device. We earn through non-intrusive ads, never by selling your information.</p>
+      </div>
+    </div>
+
+    <!-- Pillars -->
+    <div class="about-pillars">
+      <div class="pillar-card reveal">
+        <div class="pillar-icon violet"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <h4 data-i18n="about.c1t">Purpose</h4>
+        <p data-i18n="about.c1s">Every feature exists for a reason. We cut what does not add real value.</p>
+      </div>
+      <div class="pillar-card reveal delay-1">
+        <div class="pillar-icon blue"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <h4 data-i18n="about.c2t">Performance</h4>
+        <p data-i18n="about.c2s">Smooth, fast, and stable on any Android device. Speed is not optional.</p>
+      </div>
+      <div class="pillar-card reveal delay-2">
+        <div class="pillar-icon cyan"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <h4 data-i18n="about.c3t">Design</h4>
+        <p data-i18n="about.c3s">UI/UX crafted to the pixel. Interfaces that feel natural from the first tap.</p>
+      </div>
+      <div class="pillar-card reveal delay-3">
+        <div class="pillar-icon green"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <h4 data-i18n="about.c4t">Privacy</h4>
+        <p data-i18n="about.c4s">Your data belongs to you. Offline-first, no tracking, no accounts.</p>
+      </div>
+    </div>
+
+    <!-- Stack + CTA -->
+    <div class="about-stack-area reveal">
+      <p class="about-stack-label" data-i18n="about.stack">Built with</p>
+      <div class="stack-tags">
+        <span class="stack-tag">React Native</span>
+        <span class="stack-tag">Expo</span>
+        <span class="stack-tag">TypeScript</span>
+        <span class="stack-tag">Zustand</span>
+        <span class="stack-tag">Supabase</span>
+      </div>
+      <button class="btn-primary" onclick="openContact()" data-i18n="about.cta">Get in touch</button>
+    </div>
+
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-logo">Gleria Studio</div>
+    <p>&copy; 2026 Gleria Studio. <span data-i18n="footer.copy">All rights reserved.</span></p>
+    <a href="mailto:contactomglezg@gmail.com" style="font-size:0.74rem;color:var(--text-muted);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-muted)'">contactomglezg@gmail.com</a>
+  </footer>
+
+  <!-- Contact Modal -->
+  <div class="contact-modal-overlay" id="contact-modal" onclick="handleContactOverlay(event)">
+    <div class="contact-modal-box">
+      <button class="contact-modal-close" onclick="closeContact()" aria-label="Close">&times;</button>
+      <div class="contact-modal-badge" data-i18n="contact.badge">Gleria Studio</div>
+      <h2 data-i18n="contact.h2">Let's talk</h2>
+      <p class="contact-modal-desc" data-i18n="contact.desc">We are an indie studio building mobile apps: budget
+        tracking, productivity, health, games and more. Every app is free, offline-first and privacy-focused. Reach out
+        whenever you need.</p>
+      <div class="contact-options">
+        <div class="contact-option">
+          <div class="contact-option-icon support">
+            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <path d="M12 17h.01" />
+            </svg>
+          </div>
+          <h4 data-i18n="contact.s1title">App support</h4>
+          <p data-i18n="contact.s1desc">Found a bug or something is not working as expected? Tell us and we will fix it
+            as soon as possible.</p>
+          <a href="mailto:contactomglezg@gmail.com?subject=App%20Support" class="contact-option-btn support"
+            data-i18n="contact.s1btn">Report an issue</a>
+        </div>
+        <div class="contact-option">
+          <div class="contact-option-icon project">
+            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+          </div>
+          <h4 data-i18n="contact.s2title">Work with us</h4>
+          <p data-i18n="contact.s2desc">Have an app idea or want to collaborate on a project? We are open to interesting
+            proposals.</p>
+          <a href="mailto:contactomglezg@gmail.com?subject=Project%20Inquiry" class="contact-option-btn project"
+            data-i18n="contact.s2btn">Send a proposal</a>
+        </div>
+      </div>
+      <div class="contact-modal-email">
+        contactomglezg@gmail.com
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Policy Modal -->
+  <div class="modal-overlay" id="privacy-modal" onclick="handleOverlayClick(event)">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title" id="modal-title"></div>
+        <button class="modal-close" onclick="closePrivacy()" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-content" id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    /* ── Cursor glow ── */
+    const glow = document.getElementById('cursor-glow');
+    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function animGlow() { glow.style.left = mx + 'px'; glow.style.top = my + 'px'; requestAnimationFrame(animGlow); })();
+
+    /* ── Nav scroll ── */
+    window.addEventListener('scroll', () => {
+      document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    /* ── Scroll reveal ── */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* ── Counter animation ── */
+    const counterObs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = +el.dataset.target;
+        const suffix = el.dataset.suffix || '';
+        if (!target) return;
+        counterObs.unobserve(el);
+        let start = 0;
+        const step = ts => {
+          if (!start) start = ts;
+          const p = Math.min((ts - start) / 1200, 1);
+          el.textContent = Math.floor((1 - Math.pow(1 - p, 3)) * target) + suffix;
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = target + suffix;
+        };
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('[data-target]').forEach(el => counterObs.observe(el));
+
+    /* ── 3D tilt ── */
+    document.querySelectorAll('.app-card:not(.card-testing)').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(800px) rotateY(${x * 7}deg) rotateX(${-y * 7}deg) translateY(-6px)`;
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    });
+
+    /* ── Marquee ── */
+    const marqueeItems = ['Nestly', 'Last Button', 'Space Focus', 'PoopIt', 'Daily3', 'React Native', 'Expo', 'TypeScript', 'Android', 'Gleria Studio', 'Finance', 'Productivity', 'Health', 'Games', 'Privacy-first'];
+    const track = document.getElementById('marquee-track');
+    const mhtml = marqueeItems.map(t => `<div class="marquee-item">${t}<span class="marquee-sep"></span></div>`).join('');
+    track.innerHTML = mhtml + mhtml;
+
+    /* ── Privacy policies ── */
+    const privacyPolicies = {
+      nestly: {
+        title: 'Nestly · Privacy Policy',
+        updated: 'Last updated: January 11, 2025',
+        content: `
+          <h4>1. Information We Do Not Collect</h4>
+          <p>Nestly is privacy-first and fully offline. We do not require account credentials and do not upload your financial data to any external server.</p>
+          <h4>2. How Data Is Used</h4>
+          <p>Your data is processed locally on your device to provide features such as expense tracking, budgeting, and analytics.</p>
+          <h4>3. Storage and Security</h4>
+          <p>Because data stays on your device, its security depends on your device protection settings. We cannot recover local data if lost.</p>
+          <h4>4. Data Sharing</h4>
+          <p>We do not sell, share, or trade your personal financial data. We simply do not have server-side access to it.</p>
+          <h4>5. Your Rights</h4>
+          <p>You can view, edit, and delete your local data at any time through the app settings.</p>
+          <h4>6. Data Retention</h4>
+          <p>Data remains on your device as long as the app is installed and local storage is not cleared.</p>
+          <h4>7. Children's Privacy</h4>
+          <p>Nestly is not intended for children under 13. We do not knowingly collect personal data from children.</p>
+          <h4>8. Tracking and Cookies</h4>
+          <p>Nestly may rely on local storage for functionality. We do not use third-party advertising trackers.</p>
+          <h4>9. International Transfers</h4>
+          <p>Since data stays on your device, we do not perform international server-side data transfers.</p>
+          <h4>10. Policy Changes</h4>
+          <p>We may update this policy over time. Continued use of Nestly indicates acceptance of updates.</p>
+          <h4>11. Contact</h4>
+          <p>If you have questions, contact us via the Contact option in the app settings or at contactomglezg@gmail.com.</p>
+        `
+      },
+      lastbtn: {
+        title: 'Last Button · Privacy Policy',
+        updated: '',
+        content: `
+          <h4>1. What Data Do We Collect?</h4>
+          <p>Last Button does not collect any personal information such as name, email, or phone number. We store only:</p>
+          <p>• A randomly generated anonymous identifier linked to your device<br>• Your chosen public username (e.g. Player_A3K9X2)<br>• Game data: score, coin balance, inventory, and personal best</p>
+          <h4>2. Why Do We Use This Data?</h4>
+          <p>We use this data exclusively for game functionality: showing your username and score on the Leaderboard, saving your progress and upgrades in the cloud, and providing support if you contact us.</p>
+          <h4>3. Do We Share Your Data?</h4>
+          <p>No. We never sell or share your data with advertisers or third parties. Data is securely stored via Supabase.</p>
+          <h4>4. Data Retention & Deletion</h4>
+          <p>Your game data is stored as long as your anonymous session is active on your device. You can erase all your data at any time from Settings → "RESET ALL DATA". Uninstalling the app will remove your local session.</p>
+          <h4>5. Contact</h4>
+          <p>contactomglezg@gmail.com</p>
+        `
+      },
+      spacefocus: {
+        title: 'Space Focus · Privacy Policy',
+        updated: 'Last updated: March 6, 2026',
+        content: `
+          <h4>1. Data We Store</h4>
+          <p>Space Focus stores your mission progress, discovered planets, coin balance, owned rockets, and selected rocket locally on your device.</p>
+          <h4>2. Purpose of Data</h4>
+          <p>This data is used only to provide core app features such as progression, rewards, and personalization.</p>
+          <h4>3. Local Storage</h4>
+          <p>Your gameplay data is saved in local device storage. You can delete it at any time using the Delete All Data option in Options.</p>
+          <h4>4. Advertising</h4>
+          <p>The app may show ads through Google AdMob. Ad providers may process device identifiers or usage signals according to their own privacy policies.</p>
+          <h4>5. Your Control</h4>
+          <p>You can reset your data at any time. If you uninstall the app, local data may be removed by the operating system.</p>
+          <h4>6. Contact</h4>
+          <p>For privacy questions, use the Contact button in Options or write to contactomglezg@gmail.com.</p>
+        `
+      },
+      poopit: {
+        title: 'PoopIt · Privacy Policy',
+        updated: '',
+        content: `
+          <h4>1. Data Collection</h4>
+          <p>PoopIt does not collect any personal information. All health data you log (stool type, color, effort, quantity) is stored exclusively on your device using local storage.</p>
+          <h4>2. Local Storage</h4>
+          <p>All data (logs, Health Score history, weekly rings and monthly calendar) never leaves your device and is never transmitted to any external server.</p>
+          <h4>3. Advertising</h4>
+          <p>The app may display ads via Google AdMob. Ad providers may process device identifiers according to their own privacy policies.</p>
+          <h4>4. Data Deletion</h4>
+          <p>You can delete all your data at any time from the app settings. Uninstalling the app will also remove all locally stored data.</p>
+          <h4>5. Children's Privacy</h4>
+          <p>PoopIt is not directed at children under 13 and does not knowingly collect data from minors.</p>
+          <h4>6. Contact</h4>
+          <p>contactomglezg@gmail.com</p>
+        `
+      },
+      daily3: {
+        title: 'Daily3 · Privacy Policy',
+        updated: 'Last updated: March 2025',
+        content: `
+          <h4>1. Controller</h4>
+          <p>Daily3 is a daily habits application developed independently. It is not linked to any company or commercial entity.</p>
+          <h4>2. Data We Collect</h4>
+          <p>Daily3 does NOT collect any personal data. We do not request your name, email, phone number, or any identifying information. All information generated through use of the app (coins, completed challenges, unlocked collection) is stored exclusively on your device and never leaves it.</p>
+          <h4>3. Local Storage</h4>
+          <p>The only data saved is: your coin balance, challenges completed today, challenges unlocked in your collection, and the date of the last daily reset. This data is permanently deleted if you use "Reset all progress" or uninstall the app.</p>
+          <h4>4. Advertising and Third Parties</h4>
+          <p>Daily3 does not integrate any advertising networks, analytics SDKs, or third-party services that collect data. The "watch an ad" feature is currently a simulation and does not involve loading external content or sending data to third parties.</p>
+          <h4>5. Permissions</h4>
+          <p>The app does not request any special device permissions (camera, microphone, location, contacts, etc.).</p>
+          <h4>6. Minors</h4>
+          <p>Daily3 is not directed at children under 13. As we collect no personal data of any kind, there is no risk of processing data from minors.</p>
+          <h4>7. Security</h4>
+          <p>Since all data remains on your device and is not transmitted to any external server, the security of your information depends solely on your own device security.</p>
+          <h4>8. Policy Changes</h4>
+          <p>If features are added in the future that involve personal data processing, this policy will be updated and users will be notified through an app update.</p>
+          <h4>9. Contact</h4>
+          <p>contactomglezg@gmail.com</p>
+        `
+      }
+    };
+
+    function openContact() {
+      document.getElementById('contact-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeContact() {
+      document.getElementById('contact-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function handleContactOverlay(e) {
+      if (e.target === document.getElementById('contact-modal')) closeContact();
+    }
+
+    function openPrivacy(app) {
+      const pp = privacyPolicies[app];
+      document.getElementById('modal-title').textContent = pp.title;
+      const updated = pp.updated ? `<p class="modal-updated">${pp.updated}</p>` : '';
+      document.getElementById('modal-body').innerHTML = updated + pp.content;
+      document.getElementById('privacy-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePrivacy() {
+      document.getElementById('privacy-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('privacy-modal')) closePrivacy();
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closePrivacy(); closeContact(); } });
+
+    /* ── Translations ── */
+    const translations = {
+      en: {
+        'nav.apps': 'Apps', 'nav.about': 'About', 'nav.contact': 'Contact',
+        'hero.h1a': 'Apps that improve', 'hero.h1b': 'your real life',
+        'hero.sub': 'At Gleria Studio we craft mobile apps with care for every detail: finance, productivity, health and entertainment.',
+        'hero.cta1': 'View all apps', 'hero.cta2': 'About the studio',
+        'stats.apps': 'Apps in portfolio', 'stats.downloads': 'Downloads',
+        'stats.free': 'Free', 'stats.freedesc': 'All apps, no subscriptions',
+        'apps.label': 'Our Apps', 'apps.h2': 'Every app, a real solution',
+        'apps.sub': 'From tracking your budget to focusing your mind, we have an app for every moment.',
+        'nestly.cat': 'Finance',
+        'nestly.desc': 'Take control of your spending without the complexity. Log transactions, set budget limits and visualize your finances, fully offline with no account needed.',
+        'nestly.f1': 'Log expenses by category, date and notes', 'nestly.f2': 'Set custom spending limits per period',
+        'nestly.f3': 'Visual breakdown with charts and pie graphs', 'nestly.f4': 'Supports 50+ world currencies',
+        'lastbtn.cat': 'Casual Game',
+        'lastbtn.desc': 'One button. Endless possibilities. Tap to earn points, unlock upgrades in the shop and beat your high score in this minimalist and addictive clicker.',
+        'lastbtn.f1': 'Tap the button to rack up points', 'lastbtn.f2': 'Spend points in the in-game shop',
+        'lastbtn.f3': 'Unlock cosmetic upgrades and themes', 'lastbtn.f4': 'Auto-generated username, no signup',
+        'spacefocus.cat': 'Productivity',
+        'spacefocus.desc': 'Stay focused on what matters. A focus session timer with a space aesthetic, immersive Lottie animations and streak tracking to launch your productivity.',
+        'spacefocus.f1': 'Set your session length and start focusing', 'spacefocus.f2': 'Build a daily focus streak',
+        'spacefocus.f3': 'Space-themed immersive animations', 'spacefocus.f4': 'Get notified when your session ends',
+        'poopit.cat': 'Health',
+        'poopit.desc': 'Your digestive health journal. Log your routine using the Bristol Stool Scale, color and effort, and get a personalized Health Score with weekly visual analytics.',
+        'poopit.f1': 'Log with Bristol Stool Scale (7 types)', 'poopit.f2': 'Track color, effort and quantity',
+        'poopit.f3': 'Daily Health Score ring (0–100)', 'poopit.f4': 'Weekly rings and monthly calendar',
+        'daily3.cat': 'Daily Challenges',
+        'daily3.desc': 'Three daily challenges to keep you active. Complete your tasks, earn points, unlock collection items and visit the shop to customize your experience.',
+        'daily3.f1': '3 unique challenges refreshed daily', 'daily3.f2': 'Earn points by completing challenges',
+        'daily3.f3': 'Unlock items in the shop and collection', 'daily3.f4': 'Swipe between game, shop and options',
+        'badge.get': 'GET IT ON', 'badge.testing': 'In testing', 'badge.privacy': 'Privacy Policy',
+        'about.label': 'About us',
+        'about.headline': 'We build apps', 'about.headline2': 'people actually use',
+        'about.sub': 'Gleria Studio is an indie project built by a single developer tired of overcomplicated apps. Simple ideas, well executed, free for everyone.',
+        'about.s1num': '01 · Origin', 'about.s1title': 'Born from real frustrations',
+        'about.s1body': 'Every app in our portfolio started as a personal problem. Nestly when I needed a budget tracker without subscriptions. Space Focus when I could not find a simple focus timer that did not feel like a productivity cult. We do not build to fill a market gap. We build because we need it ourselves.',
+        'about.s2num': '02 · How we build', 'about.s2title': 'Native Android, modern stack',
+        'about.s2body': 'React Native and Expo give us native speed without sacrificing development agility. TypeScript keeps the code reliable. Zustand for state, Supabase when a backend is needed. Built to last.',
+        'about.s3num': '03 · What we stand for', 'about.s3title': 'Free. Private.',
+        'about.s3body': 'All apps are free to download. No subscriptions, no paywalls, no accounts required. Your data stays on your device. We earn through non-intrusive ads, never by selling your information.',
+        'about.c1t': 'Purpose', 'about.c1s': 'Every feature exists for a reason. We cut what does not add real value.',
+        'about.c2t': 'Performance', 'about.c2s': 'Smooth, fast, and stable on any Android device. Speed is not optional.',
+        'about.c3t': 'Design', 'about.c3s': 'UI/UX crafted to the pixel. Interfaces that feel natural from the first tap.',
+        'about.c4t': 'Privacy', 'about.c4s': 'Your data belongs to you. Offline-first, no tracking, no accounts.',
+        'about.stack': 'Built with', 'about.cta': 'Get in touch',
+        'contact.trigger': 'Got a question or an idea?', 'contact.btn': 'Get in touch',
+        'contact.badge': 'Gleria Studio',
+        'contact.h2': "Let's talk",
+        'contact.desc': 'We are an indie studio building mobile apps for Android: budget tracking, productivity, health, games and more. Every app is free, offline-first and privacy-focused. Reach out whenever you need.',
+        'contact.s1title': 'App support', 'contact.s1desc': 'Found a bug or something is not working as expected? Tell us and we will fix it as soon as possible.', 'contact.s1btn': 'Report an issue',
+        'contact.s2title': 'Work with us', 'contact.s2desc': 'Have an app idea or want to collaborate on a project? We are open to interesting proposals.', 'contact.s2btn': 'Send a proposal',
+        'footer.copy': 'All rights reserved.', 'footer.privacy': 'Privacy', 'footer.terms': 'Terms',
+      },
+      es: {
+        'nav.apps': 'Apps', 'nav.about': 'Nosotros', 'nav.contact': 'Contacto',
+        'hero.h1a': 'Apps que mejoran', 'hero.h1b': 'tu vida real',
+        'hero.sub': 'En Gleria Studio creamos aplicaciones móviles cuidadas al detalle: finanzas, productividad, salud y entretenimiento.',
+        'hero.cta1': 'Ver todas las apps', 'hero.cta2': 'Conoce el estudio',
+        'stats.apps': 'Apps en el portfolio', 'stats.downloads': 'Descargas',
+        'stats.free': 'Gratis', 'stats.freedesc': 'Todas las apps, sin suscripciones',
+        'apps.label': 'Nuestras Apps', 'apps.h2': 'Cada app, una solución real',
+        'apps.sub': 'Desde controlar tus gastos hasta enfocar tu mente, tenemos una app para cada momento.',
+        'nestly.cat': 'Finanzas',
+        'nestly.desc': 'Controla tus gastos sin complicaciones. Registra transacciones, define límites de presupuesto y visualiza tus finanzas, todo offline y sin cuentas ni suscripciones.',
+        'nestly.f1': 'Registra gastos por categoría, fecha y notas', 'nestly.f2': 'Define límites de gasto por periodo',
+        'nestly.f3': 'Desglose visual con gráficas y diagramas', 'nestly.f4': 'Compatible con +50 monedas del mundo',
+        'lastbtn.cat': 'Juego Casual',
+        'lastbtn.desc': 'Un botón. Infinitas posibilidades. Toca para acumular puntos, desbloquea mejoras en la tienda y compite con tu mejor puntuación en este clicker minimalista y adictivo.',
+        'lastbtn.f1': 'Toca el botón para acumular puntos', 'lastbtn.f2': 'Gasta puntos en la tienda del juego',
+        'lastbtn.f3': 'Desbloquea cosméticos y temas', 'lastbtn.f4': 'Nombre autogenerado, sin registro',
+        'spacefocus.cat': 'Productividad',
+        'spacefocus.desc': 'Mantén el foco en lo que importa. Un temporizador de sesiones con estética espacial, animaciones inmersivas y seguimiento de racha para que tu productividad despegue.',
+        'spacefocus.f1': 'Define la duración de tu sesión y empieza', 'spacefocus.f2': 'Construye tu racha diaria de enfoque',
+        'spacefocus.f3': 'Animaciones espaciales inmersivas', 'spacefocus.f4': 'Notificación al terminar la sesión',
+        'poopit.cat': 'Salud',
+        'poopit.desc': 'Tu diario de salud digestiva. Registra tu rutina usando la Escala de Bristol, color y esfuerzo, y obtén un Health Score personalizado con análisis visuales semanales.',
+        'poopit.f1': 'Registra con la Escala de Bristol (7 tipos)', 'poopit.f2': 'Anota color, esfuerzo y cantidad',
+        'poopit.f3': 'Health Score diario en anillo (0–100)', 'poopit.f4': 'Anillos semanales y calendario mensual',
+        'daily3.cat': 'Retos Diarios',
+        'daily3.desc': 'Tres retos diarios para mantenerte activo. Completa tus desafíos, acumula puntos, desbloquea ítems de colección y visita la tienda para personalizar tu experiencia.',
+        'daily3.f1': '3 retos únicos renovados cada día', 'daily3.f2': 'Gana puntos completando retos',
+        'daily3.f3': 'Desbloquea ítems en tienda y colección', 'daily3.f4': 'Desliza entre juego, tienda y opciones',
+        'badge.get': 'DISPONIBLE EN', 'badge.testing': 'En pruebas', 'badge.privacy': 'Política de privacidad',
+        'about.label': 'Sobre nosotros',
+        'about.headline': 'Creamos apps', 'about.headline2': 'que la gente usa de verdad',
+        'about.sub': 'Gleria Studio es un proyecto indie creado por un solo desarrollador harto de apps innecesariamente complicadas. Ideas simples, bien ejecutadas, gratis para todos.',
+        'about.s1num': '01 · Origen', 'about.s1title': 'Nacidas de frustraciones reales',
+        'about.s1body': 'Cada app del portfolio empezó como un problema personal. Nestly cuando necesitaba controlar gastos sin suscripciones. Space Focus cuando no encontraba un temporizador de enfoque simple que no pareciera un manual de productividad. No creamos para llenar un hueco de mercado. Creamos porque nosotros mismos lo necesitamos.',
+        'about.s2num': '02 · Cómo construimos', 'about.s2title': 'Android nativo, stack moderno',
+        'about.s2body': 'React Native y Expo nos dan velocidad nativa sin sacrificar agilidad de desarrollo. TypeScript mantiene el código fiable. Zustand para el estado, Supabase cuando hace falta un backend. Construido para durar.',
+        'about.s3num': '03 · En qué creemos', 'about.s3title': 'Gratis. Privado.',
+        'about.s3body': 'Todas las apps son gratuitas. Sin suscripciones, sin paywalls, sin cuentas obligatorias. Tus datos se quedan en tu dispositivo. Ganamos con anuncios no intrusivos, nunca vendiendo tu información.',
+        'about.c1t': 'Propósito', 'about.c1s': 'Cada función tiene un motivo. Eliminamos lo que no aporta valor real.',
+        'about.c2t': 'Rendimiento', 'about.c2s': 'Fluido, rápido y estable en cualquier Android. La velocidad no es opcional.',
+        'about.c3t': 'Diseño', 'about.c3s': 'UI/UX al píxel. Interfaces que se sienten naturales desde el primer toque.',
+        'about.c4t': 'Privacidad', 'about.c4s': 'Tus datos son tuyos. Offline-first, sin rastreo, sin cuentas.',
+        'about.stack': 'Construido con', 'about.cta': 'Contáctanos',
+        'contact.trigger': '¿Tienes alguna pregunta o idea?', 'contact.btn': 'Contáctanos',
+        'contact.badge': 'Gleria Studio',
+        'contact.h2': 'Hablemos',
+        'contact.desc': 'Somos un estudio indie que crea apps para Android: control de gastos, productividad, salud, juegos y más. Todas las apps son gratuitas, funcionan sin conexión y respetan tu privacidad. Escríbenos cuando quieras.',
+        'contact.s1title': 'Soporte', 'contact.s1desc': '¿Encontraste un bug o algo no funciona como esperabas? Cuéntanos y lo solucionamos lo antes posible.', 'contact.s1btn': 'Reportar un problema',
+        'contact.s2title': 'Trabaja con nosotros', 'contact.s2desc': '¿Tienes una idea de app o quieres colaborar en un proyecto? Estamos abiertos a propuestas interesantes.', 'contact.s2btn': 'Enviar propuesta',
+        'footer.copy': 'Todos los derechos reservados.', 'footer.privacy': 'Privacidad', 'footer.terms': 'Términos',
+      }
+    };
+
+    let currentLang = 'en';
+    function setLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.title = 'Gleria Studio';
+      const t = translations[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key] !== undefined) el.textContent = t[key];
+      });
+      // Split headline (gradient span preserved)
+      const h1 = document.getElementById('about-headline');
+      const h2span = document.getElementById('about-headline2');
+      if (h1 && h2span) {
+        h1.childNodes[0].textContent = t['about.headline'] + ' ';
+        h2span.textContent = t['about.headline2'];
+      }
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+      });
+    }
+  </script>
+
 </body>
+
 </html>
