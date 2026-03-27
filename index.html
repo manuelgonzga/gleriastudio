@@ -513,18 +513,29 @@
     }
 
     .apps-grid {
-      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 1060px;
       margin: 0 auto;
     }
 
     .apps-row {
       display: flex;
-      gap: 20px;
+      gap: 24px;
     }
 
     .apps-row .app-card {
       flex: 1;
       min-width: 0;
+    }
+
+    .apps-row-2 {
+      justify-content: center;
+    }
+
+    .apps-row-2 .app-card {
+      flex: 0 0 calc(33.333% - 16px);
     }
 
     /* App card */
@@ -1323,23 +1334,13 @@
     }
 
     /* ─── Responsive ─── */
-    @media (max-width: 1100px) {
-      .apps-row {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        flex-wrap: nowrap;
-        padding-bottom: 6px;
-      }
-      .apps-row::-webkit-scrollbar { display: none; }
-      .apps-row .app-card { flex: 0 0 260px; }
-    }
-
     @media (max-width: 860px) {
       .about-story { grid-template-columns: 1fr; }
       .about-pillars { grid-template-columns: repeat(2, 1fr); }
       .stats-inner { grid-template-columns: repeat(3, 1fr); }
-      .apps-row .app-card { flex: 0 0 240px; }
+      .apps-section { padding-left: 0; padding-right: 0; }
+      .apps-row { flex-direction: column; }
+      .apps-row-2 .app-card { flex: 1; }
     }
 
     @media (max-width: 640px) {
@@ -1359,7 +1360,6 @@
       .stat-card { padding: 24px 20px; }
 
       .apps-section { padding: 64px 5%; }
-      .apps-section .section-header { padding: 0 1%; }
 
       .about-section { padding: 64px 5%; }
       .about-headline { letter-spacing: -1.5px; }
@@ -1493,8 +1493,6 @@
     </div>
 
     <div class="apps-grid">
-
-      <!-- Row 1 -->
       <div class="apps-row">
 
         <!-- Nestly -->
@@ -1688,7 +1686,9 @@
           <button class="privacy-btn" onclick="openPrivacy('spacefocus')" data-i18n="badge.privacy">Privacy Policy</button>
         </div>
 
-        <!-- PoopIt and Daily3 continue below -->
+      </div><!-- end row 1 -->
+
+      <div class="apps-row apps-row-2">
 
         <!-- PoopIt -->
         <div class="app-card card-poopit card-testing reveal">
@@ -1752,7 +1752,7 @@
           <button class="privacy-btn" onclick="openPrivacy('daily3')" data-i18n="badge.privacy">Privacy Policy</button>
         </div>
 
-      </div><!-- end apps-row -->
+      </div><!-- end row 2 -->
 
     </div>
   </section>
@@ -2090,6 +2090,7 @@
     function handleOverlayClick(e) {
       if (e.target === document.getElementById('privacy-modal')) closePrivacy();
     }
+
 
     function toggleMobileMenu() {
       const menu = document.getElementById('mobile-menu');
